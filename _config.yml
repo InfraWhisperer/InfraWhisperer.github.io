@@ -1,0 +1,54 @@
+title: Raghav Potluri
+tagline: Field notes from the plumbing under LLM traffic
+description: >-
+  Raghav Potluri — engineering notes on the infrastructure beneath large language
+  models: distributed inference, prompt caching, and the telemetry that makes it
+  debuggable.
+url: "https://infrawhisperer.github.io"
+baseurl: ""
+lang: en
+
+author:
+  name: Raghav Potluri
+  handle: InfraWhisperer
+
+# jekyll-seo-tag uses this for the WebSite/Person JSON-LD sameAs — helps the page
+# rank on the real name.
+social:
+  name: Raghav Potluri
+  links:
+    - https://github.com/InfraWhisperer
+    - https://www.linkedin.com/in/raghav-potluri/
+
+github_username: InfraWhisperer
+
+permalink: /writing/:title/
+
+markdown: kramdown
+highlighter: rouge
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+feed:
+  path: feed.xml
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor
+  - .gitignore
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post

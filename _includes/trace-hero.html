@@ -1,0 +1,27 @@
+<div class="trace" role="img" aria-label="An OpenTelemetry-style trace of a chat request flowing through a gateway pipeline — cache, normalize, guard, meter — then out to the model, with per-stage span timings.">
+  <div class="trace-head">
+    <span>trace · chat completion</span>
+    <span class="dot-row" aria-hidden="true"><i></i><i></i><i></i></span>
+  </div>
+
+  <div class="rail" aria-hidden="true">
+    <span class="node">client</span>
+    <span class="node gateway">
+      <span class="stage">cache</span>
+      <span class="stage">normalize</span>
+      <span class="stage">guard</span>
+      <span class="stage">meter</span>
+    </span>
+    <span class="node">model</span>
+    <span class="signal"></span>
+  </div>
+
+  <div class="spans">
+    <div class="span-row"><span class="label">gateway.recv</span><span class="span-track"><span class="span-bar blue"  style="left:0%;  width:100%"></span></span><span class="ms">18ms</span></div>
+    <div class="span-row"><span class="label">cache.lookup</span><span class="span-track"><span class="span-bar amber" style="left:4%;  width:12%"></span></span><span class="ms">2ms</span></div>
+    <div class="span-row"><span class="label">normalize</span>  <span class="span-track"><span class="span-bar teal"  style="left:16%; width:9%"></span></span><span class="ms">1ms</span></div>
+    <div class="span-row"><span class="label">guardrails</span> <span class="span-track"><span class="span-bar teal"  style="left:25%; width:7%"></span></span><span class="ms">1ms</span></div>
+    <div class="span-row"><span class="label">upstream.chat</span><span class="span-track"><span class="span-bar blue" style="left:32%; width:60%"></span></span><span class="ms">640ms</span></div>
+    <div class="span-row"><span class="label">meter.usage</span> <span class="span-track"><span class="span-bar teal"  style="left:92%; width:6%"></span></span><span class="ms">0.4ms</span></div>
+  </div>
+</div>
