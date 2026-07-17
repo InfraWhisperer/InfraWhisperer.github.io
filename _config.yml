@@ -27,7 +27,7 @@ github_username: InfraWhisperer
 # (hostname: infrawhisperer.github.io), then copy the beacon "token" and paste it
 # below. Leave empty to disable (no script is emitted when blank).
 analytics:
-  cloudflare_token: ""
+  cloudflare_token: "7b043d09f6b0434b9c7fd54d0b0b4ea7"
 
 permalink: /writing/:title/
 
