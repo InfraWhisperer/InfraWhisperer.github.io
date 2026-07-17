@@ -25,3 +25,8 @@
   "sameAs": ["https://github.com/InfraWhisperer", "https://www.linkedin.com/in/raghav-potluri/"]
 }
 </script>
+
+{%- assign cf_token = site.analytics.cloudflare_token -%}
+{%- if cf_token and cf_token != "" -%}
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "{{ cf_token }}"}'></script>
+{%- endif -%}
