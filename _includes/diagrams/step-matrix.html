@@ -1,0 +1,132 @@
+<figure class="figure figure-scroll">
+<svg viewBox="0 0 880 396" role="img"
+     aria-label="A grid of five requests by eight engine steps. Each cell shows how many tokens that request was scheduled for in that step. Prefill chunks and single decode tokens appear inside the same vertical column, meaning the same engine step. A bar under each column shows the step's total against the 8192-token budget; two steps carry only 3 and 4 tokens.">
+
+  <!-- legend -->
+  <g transform="translate(0,16)">
+    <rect x="0" y="0" width="11" height="11" rx="2" class="dg-prefill"/>
+    <text x="17" y="9" class="dg-small">PREFILL CHUNK</text>
+    <rect x="132" y="0" width="11" height="11" rx="2" class="dg-decode"/>
+    <text x="149" y="9" class="dg-small">DECODE (1 TOKEN)</text>
+    <rect x="292" y="0" width="11" height="11" rx="2" fill="none" stroke="var(--ink-faint)" stroke-dasharray="2 2"/>
+    <text x="309" y="9" class="dg-small">PREEMPTED</text>
+    <text x="880" y="9" class="dg-small" text-anchor="end">max_num_batched_tokens = 8192</text>
+  </g>
+
+  <!-- step headers -->
+  <g class="dg-small">
+    <text x="153" y="58" text-anchor="middle">STEP N</text>
+    <text x="241" y="58" text-anchor="middle">N+1</text>
+    <text x="329" y="58" text-anchor="middle">N+2</text>
+    <text x="417" y="58" text-anchor="middle">N+3</text>
+    <text x="505" y="58" text-anchor="middle">N+4</text>
+    <text x="593" y="58" text-anchor="middle">N+5</text>
+    <text x="681" y="58" text-anchor="middle">N+6</text>
+    <text x="769" y="58" text-anchor="middle">N+7</text>
+  </g>
+
+  <!-- row lanes -->
+  <g class="dg-track">
+    <rect x="116" y="78"  width="690" height="26" rx="4"/>
+    <rect x="116" y="114" width="690" height="26" rx="4"/>
+    <rect x="116" y="150" width="690" height="26" rx="4"/>
+    <rect x="116" y="186" width="690" height="26" rx="4"/>
+    <rect x="116" y="222" width="690" height="26" rx="4"/>
+  </g>
+
+  <!-- row labels -->
+  <g class="dg-mono" text-anchor="end">
+    <text x="104" y="96">req A</text>
+    <text x="104" y="132">req B</text>
+    <text x="104" y="168">req C</text>
+    <text x="104" y="204">req D</text>
+    <text x="104" y="240">req E</text>
+  </g>
+
+  <!-- req A: 16,892-token prompt, chunked over three steps, then decodes -->
+  <g>
+    <rect x="116" y="78" width="74" height="26" rx="4" class="dg-prefill"/><text x="153" y="95" class="dg-cell-txt">8190</text>
+    <rect x="204" y="78" width="74" height="26" rx="4" class="dg-prefill"/><text x="241" y="95" class="dg-cell-txt">8190</text>
+    <rect x="292" y="78" width="74" height="26" rx="4" class="dg-prefill"/><text x="329" y="95" class="dg-cell-txt">512</text>
+    <rect x="380" y="78" width="74" height="26" rx="4" class="dg-decode"/><text x="417" y="95" class="dg-cell-txt">1</text>
+    <rect x="468" y="78" width="74" height="26" rx="4" class="dg-decode"/><text x="505" y="95" class="dg-cell-txt">1</text>
+    <rect x="556" y="78" width="74" height="26" rx="4" class="dg-decode"/><text x="593" y="95" class="dg-cell-txt">1</text>
+    <rect x="644" y="78" width="74" height="26" rx="4" class="dg-decode"/><text x="681" y="95" class="dg-cell-txt">1</text>
+    <rect x="732" y="78" width="74" height="26" rx="4" class="dg-decode"/><text x="769" y="95" class="dg-cell-txt">1</text>
+  </g>
+
+  <!-- req B: already decoding, finishes at N+5 -->
+  <g>
+    <rect x="116" y="114" width="74" height="26" rx="4" class="dg-decode"/><text x="153" y="131" class="dg-cell-txt">1</text>
+    <rect x="204" y="114" width="74" height="26" rx="4" class="dg-decode"/><text x="241" y="131" class="dg-cell-txt">1</text>
+    <rect x="292" y="114" width="74" height="26" rx="4" class="dg-decode"/><text x="329" y="131" class="dg-cell-txt">1</text>
+    <rect x="380" y="114" width="74" height="26" rx="4" class="dg-decode"/><text x="417" y="131" class="dg-cell-txt">1</text>
+    <rect x="468" y="114" width="74" height="26" rx="4" class="dg-decode"/><text x="505" y="131" class="dg-cell-txt">1</text>
+    <rect x="556" y="114" width="74" height="26" rx="4" class="dg-decode"/><text x="593" y="131" class="dg-cell-txt">1</text>
+    <text x="681" y="132" class="dg-small" text-anchor="middle">EOS — FREED</text>
+  </g>
+
+  <!-- req C: arrives at N+2 -->
+  <g>
+    <rect x="292" y="150" width="74" height="26" rx="4" class="dg-prefill"/><text x="329" y="167" class="dg-cell-txt">7678</text>
+    <rect x="380" y="150" width="74" height="26" rx="4" class="dg-prefill"/><text x="417" y="167" class="dg-cell-txt">8189</text>
+    <rect x="468" y="150" width="74" height="26" rx="4" class="dg-decode"/><text x="505" y="167" class="dg-cell-txt">1</text>
+    <rect x="556" y="150" width="74" height="26" rx="4" class="dg-decode"/><text x="593" y="167" class="dg-cell-txt">1</text>
+    <rect x="644" y="150" width="74" height="26" rx="4" class="dg-decode"/><text x="681" y="167" class="dg-cell-txt">1</text>
+    <rect x="732" y="150" width="74" height="26" rx="4" class="dg-decode"/><text x="769" y="167" class="dg-cell-txt">1</text>
+    <text x="204" y="168" class="dg-small" text-anchor="middle">ARRIVES →</text>
+  </g>
+
+  <!-- req D: decoding, preempted at N+4, recomputed at N+6 -->
+  <g>
+    <rect x="116" y="186" width="74" height="26" rx="4" class="dg-decode"/><text x="153" y="203" class="dg-cell-txt">1</text>
+    <rect x="204" y="186" width="74" height="26" rx="4" class="dg-decode"/><text x="241" y="203" class="dg-cell-txt">1</text>
+    <rect x="292" y="186" width="74" height="26" rx="4" class="dg-decode"/><text x="329" y="203" class="dg-cell-txt">1</text>
+    <rect x="380" y="186" width="74" height="26" rx="4" class="dg-decode"/><text x="417" y="203" class="dg-cell-txt">1</text>
+    <rect x="468" y="186" width="74" height="26" rx="4" fill="none" stroke="var(--ink-faint)" stroke-dasharray="3 3"/>
+    <rect x="556" y="186" width="74" height="26" rx="4" fill="none" stroke="var(--ink-faint)" stroke-dasharray="3 3"/>
+    <text x="505" y="203" class="dg-small" text-anchor="middle">BLOCKS</text>
+    <text x="593" y="203" class="dg-small" text-anchor="middle">FREED</text>
+    <rect x="644" y="186" width="74" height="26" rx="4" class="dg-prefill"/><text x="681" y="203" class="dg-cell-txt">8189</text>
+    <rect x="732" y="186" width="74" height="26" rx="4" class="dg-decode"/><text x="769" y="203" class="dg-cell-txt">1</text>
+  </g>
+
+  <!-- req E: arrives at N+5 -->
+  <g>
+    <rect x="556" y="222" width="74" height="26" rx="4" class="dg-prefill"/><text x="593" y="239" class="dg-cell-txt">8189</text>
+    <rect x="644" y="222" width="74" height="26" rx="4" class="dg-decode"/><text x="681" y="239" class="dg-cell-txt">1</text>
+    <rect x="732" y="222" width="74" height="26" rx="4" class="dg-decode"/><text x="769" y="239" class="dg-cell-txt">1</text>
+    <text x="468" y="240" class="dg-small" text-anchor="middle">ARRIVES →</text>
+  </g>
+
+  <!-- budget band -->
+  <line x1="116" y1="318" x2="806" y2="318" stroke="var(--line-strong)"/>
+  <text x="104" y="300" class="dg-mono" text-anchor="end">budget</text>
+  <g>
+    <rect x="116" y="274" width="74" height="44" rx="3" class="dg-prefill"/>
+    <rect x="204" y="274" width="74" height="44" rx="3" class="dg-prefill"/>
+    <rect x="292" y="274" width="74" height="44" rx="3" class="dg-prefill"/>
+    <rect x="380" y="274" width="74" height="44" rx="3" class="dg-prefill"/>
+    <rect x="468" y="316" width="74" height="2"  rx="1" class="dg-decode"/>
+    <rect x="556" y="274" width="74" height="44" rx="3" class="dg-prefill"/>
+    <rect x="644" y="274" width="74" height="44" rx="3" class="dg-prefill"/>
+    <rect x="732" y="316" width="74" height="2"  rx="1" class="dg-decode"/>
+  </g>
+  <g class="dg-small" text-anchor="middle">
+    <text x="153" y="334">8192</text>
+    <text x="241" y="334">8192</text>
+    <text x="329" y="334">8192</text>
+    <text x="417" y="334">8192</text>
+    <text x="505" y="334">3</text>
+    <text x="593" y="334">8192</text>
+    <text x="681" y="334">8192</text>
+    <text x="769" y="334">4</text>
+  </g>
+
+  <text x="116" y="362" class="dg-mono">Read a column, not a row: one step is one forward pass over every cell in it.</text>
+  <text x="116" y="380" class="dg-small">STEPS N+4 AND N+7 ARE DRAWN AT A 2PX FLOOR — AT TRUE SCALE THEY WOULD BE SUB-PIXEL.</text>
+</svg>
+<figcaption>
+Eight consecutive engine steps on a single GPU. <b>A column is one <code>execute_model</code> call</b>, and every column here mixes prefill chunks with single decode tokens — the scheduler has no notion of a prefill phase to separate them. Request D is preempted at N+4 to free blocks for C and E, and pays for it at N+6 by recomputing all 8189 of its tokens from scratch. The two decode-only steps schedule 3 and 4 tokens against an 8192 budget — under 0.05% of it — while still reading every weight in the model once.
+</figcaption>
+</figure>

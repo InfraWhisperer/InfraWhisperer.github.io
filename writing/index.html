@@ -1,0 +1,64 @@
+---
+layout: default
+title: Writing
+description: Deep dives on LLM inference infrastructure — Dynamo, llm-d, vLLM, SGLang, prompt caching, and gateway telemetry, by Raghav Potluri.
+---
+
+{%- comment -%}
+No `permalink:` here on purpose. jekyll-paginate builds pages 2..n by re-reading this
+file's front matter, so a permalink would be copied onto every page and they would all
+collide at /writing/. The file's location gives /writing/ for page 1 anyway.
+{%- endcomment -%}
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Writing</h2>
+      <span class="more">
+        {{ site.posts | size }} post{% if site.posts.size != 1 %}s{% endif %}
+        {%- if paginator.total_pages > 1 %} · page {{ paginator.page }} of {{ paginator.total_pages }}{% endif %}
+      </span>
+    </div>
+
+    {% if paginator.posts.size > 0 %}
+    <ul class="post-list">
+      {% for post in paginator.posts %}
+      <li>
+        <a href="{{ post.url | relative_url }}">
+          <span class="date">{{ post.date | date: "%Y-%m-%d" }}</span>
+          <span class="title">{{ post.title }}</span>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+
+    {% if paginator.total_pages > 1 %}
+    <nav class="pager" aria-label="Pagination">
+      {% if paginator.previous_page %}
+        <a class="step" href="{{ paginator.previous_page_path | relative_url }}">← newer</a>
+      {% else %}
+        <span class="step disabled">← newer</span>
+      {% endif %}
+
+      <span class="pager-pages">
+        {% for n in (1..paginator.total_pages) %}
+          {%- if n == paginator.page %}<span class="here">{{ n }}</span>
+          {%- elsif n == 1 %}<a href="{{ '/writing/' | relative_url }}">{{ n }}</a>
+          {%- else %}<a href="{{ site.paginate_path | replace: ':num', n | relative_url }}">{{ n }}</a>
+          {%- endif %}
+        {% endfor %}
+      </span>
+
+      {% if paginator.next_page %}
+        <a class="step" href="{{ paginator.next_page_path | relative_url }}">older →</a>
+      {% else %}
+        <span class="step disabled">older →</span>
+      {% endif %}
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <p class="lede" style="max-width:54ch">First posts are drafting now — deep dives on Dynamo, llm-d, vLLM, and prompt caching. Follow along on <a href="https://github.com/InfraWhisperer">GitHub</a> or subscribe by <a href="{{ '/feed.xml' | relative_url }}">RSS</a>.</p>
+    {% endif %}
+  </div>
+</section>

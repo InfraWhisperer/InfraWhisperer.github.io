@@ -1,0 +1,48 @@
+---
+layout: null
+permalink: /feed.xml
+---
+{%- comment -%}
+Hand-rolled because jekyll-feed cannot merge a collection into the main feed — it only
+emits a second, separate feed. Series instalments live in the `series_posts` collection
+(so they stay out of Writing and the paginator), and a subscriber must still get them
+here, in one feed, or they miss the whole series.
+{%- endcomment -%}
+{%- assign items = site.posts | concat: site.series_posts | sort: "date" | reverse -%}
+{%- assign latest = items | first -%}
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <generator uri="https://jekyllrb.com/" version="{{ jekyll.version }}">Jekyll</generator>
+  <link href="{{ '/feed.xml' | absolute_url }}" rel="self" type="application/atom+xml" />
+  <link href="{{ '/' | absolute_url }}" rel="alternate" type="text/html" />
+  <updated>{% if latest %}{{ latest.date | date_to_xmlschema }}{% else %}{{ site.time | date_to_xmlschema }}{% endif %}</updated>
+  <id>{{ '/feed.xml' | absolute_url }}</id>
+  <title type="html">{{ site.title | escape }}</title>
+  <subtitle>{{ site.description | strip_newlines | strip | escape }}</subtitle>
+  <author>
+    <name>{{ site.author.name | escape }}</name>
+    <uri>{{ '/' | absolute_url }}</uri>
+  </author>
+{%- for item in items %}
+  <entry>
+    <title type="html">{{ item.title | escape }}</title>
+    <link href="{{ item.url | absolute_url }}" rel="alternate" type="text/html" title="{{ item.title | escape }}" />
+    <published>{{ item.date | date_to_xmlschema }}</published>
+    <updated>{{ item.date | date_to_xmlschema }}</updated>
+    <id>{{ item.url | absolute_url }}</id>
+    <author>
+      <name>{{ site.author.name | escape }}</name>
+    </author>
+  {%- if item.description %}
+    <summary type="html">{{ item.description | strip_newlines | strip | escape }}</summary>
+  {%- endif %}
+  {%- if item.series %}
+    <category term="{{ item.series | slugify }}" label="{{ item.series | escape }}" />
+  {%- endif %}
+  {%- for tag in item.tags %}
+    <category term="{{ tag | escape }}" />
+  {%- endfor %}
+    <content type="html" xml:base="{{ item.url | absolute_url }}">{{ item.content | strip | escape }}</content>
+  </entry>
+{%- endfor %}
+</feed>

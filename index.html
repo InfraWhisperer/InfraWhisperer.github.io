@@ -3,45 +3,56 @@ layout: home
 title: Raghav Potluri — LLM inference infrastructure
 ---
 
-<section id="dives">
+<section id="writing">
   <div class="wrap">
     <div class="section-head">
-      <h2>Deep dives</h2>
-      <span class="more">drafting</span>
+      <h2><a href="{{ '/writing/' | relative_url }}">Writing</a></h2>
+      <span class="more">latest {% if site.posts.size < 3 %}{{ site.posts | size }}{% else %}3{% endif %} of {{ site.posts | size }}</span>
     </div>
+    {% if site.posts.size > 0 %}
     <div class="dives">
-      {% for i in (1..4) %}
-      <article class="dive skeleton" aria-hidden="true">
-        <span class="topic">// soon</span>
-        <div class="skel">
-          <span class="skel-bar" style="width:85%; height:1rem"></span>
-          <span class="skel-bar" style="width:100%"></span>
-          <span class="skel-bar" style="width:68%"></span>
-        </div>
-        <span class="foot">coming soon</span>
+      {%- for post in site.posts limit: 3 %}
+      <article class="dive">
+        <span class="topic">{% if post.topic %}{{ post.topic }}{% else %}// note{% endif %}</span>
+        <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+        <p>{{ post.description | strip_html | truncate: 170 }}</p>
+        <span class="foot">
+          {{ post.date | date: "%Y-%m-%d" }}
+          {%- if post.reading_time %} · {{ post.reading_time }}{% endif %}
+          {%- if post.series %} · {{ post.series }} 0{{ post.part }}{% endif %}
+        </span>
       </article>
-      {% endfor %}
+      {%- endfor %}
     </div>
+    <p class="lede" style="max-width:62ch; margin-top:1.5rem; font-size:0.95rem">
+      <a href="{{ '/writing/' | relative_url }}">All {{ site.posts | size }} posts →</a>
+    </p>
+    {% else %}
+    <p class="lede" style="max-width:54ch">First posts are drafting now. Subscribe by <a href="{{ '/feed.xml' | relative_url }}">RSS</a>.</p>
+    {% endif %}
   </div>
 </section>
 
+{%- assign all_series = site.pages | where: "layout", "series" | sort: "order" %}
 <section id="series">
   <div class="wrap">
     <div class="section-head">
-      <h2>The series</h2>
-      <span class="more">a four-part sequence</span>
+      <h2><a href="{{ '/series/' | relative_url }}">Series</a></h2>
+      <span class="more">{{ all_series | size }} running</span>
     </div>
-    <div class="series">
-      {% for n in (1..4) %}
-      <article class="series-item skeleton" aria-hidden="true">
-        <span class="num">0{{ n }}</span>
-        <div class="skel" style="gap:0.6rem">
-          <span class="skel-bar" style="width:52%; height:1rem"></span>
-          <span class="skel-bar" style="width:78%"></span>
-        </div>
-        <span class="tag">soon</span>
-      </article>
-      {% endfor %}
+    {% if all_series.size > 0 %}
+    <div class="series-cards">
+      {%- for s in all_series %}
+        {% include series-card.html series=s %}
+      {%- endfor %}
     </div>
+    {% if all_series.size > 1 %}
+    <p class="lede" style="max-width:62ch; margin-top:1.5rem; font-size:0.95rem">
+      <a href="{{ '/series/' | relative_url }}">All series →</a>
+    </p>
+    {% endif %}
+    {% else %}
+    <p class="lede" style="max-width:54ch">First series is drafting now.</p>
+    {% endif %}
   </div>
 </section>

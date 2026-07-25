@@ -1,0 +1,45 @@
+---
+layout: default
+---
+{%- assign parts = page.roadmap | size -%}
+{%- assign done = site.series_posts | where: "series", page.title | sort: "part" -%}
+{%- assign done_n = done | size -%}
+<section>
+  <div class="wrap">
+    <p class="crumb"><a href="{{ '/series/' | relative_url }}">Series</a> <span>/</span> {{ page.title }}</p>
+
+    <div class="section-head">
+      <h2>{{ page.title }}</h2>
+      <span class="more">{{ done_n }} of {{ parts }} published</span>
+    </div>
+
+    <p class="lede" style="max-width:62ch">{{ page.intro | default: page.description }}</p>
+
+    <div class="series">
+      {%- for item in page.roadmap %}
+      {%- assign post = done | where: "part", item.part | first %}
+      <article class="series-item{% unless post %} skeleton{% endunless %}">
+        <span class="num">{% if item.part < 10 %}0{% endif %}{{ item.part }}</span>
+        <div>
+          <h3>
+            {%- if post %}<a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            {%- else %}{{ item.title }}{% endif %}
+          </h3>
+          <p class="thesis">{{ item.thesis }}</p>
+          {%- if post and post.topic %}<span class="flag">{{ post.topic }}</span>{% endif %}
+        </div>
+        <span class="tag">
+          {%- if post %}{{ post.date | date: "%Y-%m-%d" }}{% else %}planned{% endif %}
+        </span>
+      </article>
+      {%- endfor %}
+    </div>
+
+    {{ content }}
+
+    <p class="lede" style="max-width:62ch; margin-top:2rem; font-size:0.95rem">
+      New parts land here first. <a href="{{ '/feed.xml' | relative_url }}">RSS</a> if you want them
+      as they publish.
+    </p>
+  </div>
+</section>

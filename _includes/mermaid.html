@@ -1,0 +1,85 @@
+{%- comment -%}
+Mermaid, opt-in per page via `mermaid: true` in front matter.
+
+kramdown+rouge renders ```mermaid fences as
+  <div class="language-mermaid highlighter-rouge"><div class="highlight"><pre><code>…
+so the source has to be lifted out of the code element before mermaid runs.
+Theme variables are bound to the site palette and re-rendered on scheme change.
+{%- endcomment -%}
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+
+  const css = getComputedStyle(document.documentElement);
+  const v = (name) => css.getPropertyValue(name).trim();
+
+  // Lift fenced sources into <pre class="mermaid"> once; keep the raw text so a
+  // theme flip can re-render from source rather than from mermaid's own output.
+  const nodes = [];
+  document.querySelectorAll(
+    ".language-mermaid code, code.language-mermaid, pre.mermaid"
+  ).forEach((el) => {
+    const src = el.textContent;
+    const host = document.createElement("figure");
+    host.className = "figure figure-mermaid";
+    const pre = document.createElement("pre");
+    pre.className = "mermaid";
+    pre.textContent = src;
+    host.appendChild(pre);
+    const outer = el.closest(".language-mermaid, figure") || el.parentElement;
+    outer.replaceWith(host);
+    nodes.push({ pre, src });
+  });
+
+  if (nodes.length) {
+    const render = () => {
+      mermaid.initialize({
+        startOnLoad: false,
+        securityLevel: "strict",
+        fontFamily: 'var(--font-body), "IBM Plex Sans", sans-serif',
+        theme: "base",
+        themeVariables: {
+          background: v("--surface"),
+          primaryColor: v("--surface-2"),
+          primaryTextColor: v("--ink"),
+          primaryBorderColor: v("--line-strong"),
+          secondaryColor: v("--accent-wash"),
+          tertiaryColor: v("--surface"),
+          lineColor: v("--ink-faint"),
+          textColor: v("--ink-soft"),
+          mainBkg: v("--surface-2"),
+          nodeBorder: v("--line-strong"),
+          clusterBkg: v("--base"),
+          clusterBorder: v("--line"),
+          edgeLabelBackground: v("--surface"),
+          actorBkg: v("--surface-2"),
+          actorBorder: v("--line-strong"),
+          actorTextColor: v("--ink"),
+          actorLineColor: v("--ink-faint"),
+          signalColor: v("--ink-soft"),
+          signalTextColor: v("--ink-soft"),
+          labelBoxBkgColor: v("--accent-wash"),
+          labelBoxBorderColor: v("--accent"),
+          labelTextColor: v("--ink"),
+          loopTextColor: v("--ink-soft"),
+          noteBkgColor: v("--accent-wash"),
+          noteBorderColor: v("--accent"),
+          noteTextColor: v("--ink"),
+          sequenceNumberColor: v("--surface"),
+          fontSize: "14px",
+        },
+        flowchart: { curve: "basis", padding: 14, useMaxWidth: true },
+        sequence: { useMaxWidth: true, mirrorActors: false, boxMargin: 8 },
+      });
+      nodes.forEach(({ pre, src }, i) => {
+        pre.removeAttribute("data-processed");
+        pre.textContent = src;
+        pre.id = pre.id || `mmd-${i}`;
+      });
+      mermaid.run({ nodes: nodes.map((n) => n.pre) });
+    };
+
+    render();
+    const scheme = window.matchMedia("(prefers-color-scheme: dark)");
+    scheme.addEventListener?.("change", render);
+  }
+</script>

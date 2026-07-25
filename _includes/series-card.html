@@ -1,0 +1,36 @@
+{%- comment -%}
+One card per series. Usage: {% include series-card.html series=page_object %}
+Everything is derived from the series page's front matter plus the posts that
+declare `series: <its title>`, so adding a series page is the only step needed.
+{%- endcomment -%}
+{%- assign s = include.series -%}
+{%- assign parts = s.roadmap | size -%}
+{%- assign done = site.series_posts | where: "series", s.title -%}
+{%- assign done_n = done | size -%}
+{%- assign latest = done | sort: "part" | last -%}
+{%- if parts > 0 -%}{%- assign pct = done_n | times: 100.0 | divided_by: parts -%}{%- else -%}{%- assign pct = 0 -%}{%- endif -%}
+
+<article class="series-card">
+  <div class="series-card-head">
+    <span class="kicker">SERIES · {{ parts }} PART{% if parts != 1 %}S{% endif %}</span>
+    <span class="state{% if done_n == parts %} done{% endif %}">
+      {%- if done_n == parts %}complete{% elsif done_n > 0 %}ongoing{% else %}drafting{% endif -%}
+    </span>
+  </div>
+
+  <h3><a href="{{ s.url | relative_url }}">{{ s.title }}</a></h3>
+  <p class="tagline">{{ s.tagline | default: s.description }}</p>
+
+  <div class="progress" role="img" aria-label="{{ done_n }} of {{ parts }} parts published">
+    <span class="progress-bar"><span class="progress-fill" style="width:{{ pct }}%"></span></span>
+    <span class="progress-label">{{ done_n }} of {{ parts }}</span>
+  </div>
+
+  <span class="foot">
+    {%- if latest -%}
+      Latest &nbsp;<a href="{{ latest.url | relative_url }}">{% if latest.part < 10 %}0{% endif %}{{ latest.part }} · {{ latest.title }}</a>
+    {%- else -%}
+      First part drafting
+    {%- endif -%}
+  </span>
+</article>

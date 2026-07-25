@@ -35,12 +35,17 @@ markdown: kramdown
 highlighter: rouge
 
 plugins:
-  - jekyll-feed
   - jekyll-seo-tag
   - jekyll-sitemap
+  - jekyll-paginate
 
-feed:
-  path: feed.xml
+# Paginates writing/index.html only (jekyll-paginate v1 drives the one page that
+# sits at the root of paginate_path). Page 1 stays at /writing/.
+paginate: 3
+paginate_path: "/writing/page:num/"
+
+# No jekyll-feed: /feed.xml is hand-written so posts and series instalments land in
+# one feed. See the comment at the top of feed.xml.
 
 kramdown:
   input: GFM
@@ -53,9 +58,21 @@ exclude:
   - vendor
   - .gitignore
 
+# Series instalments are NOT posts. Keeping them out of `site.posts` is what stops
+# them appearing in Writing and in the paginator (jekyll-paginate slices site.posts
+# wholesale and cannot be filtered, so a filtered loop would give uneven pages).
+collections:
+  series_posts:
+    output: true
+
 defaults:
   - scope:
       path: ""
       type: posts
+    values:
+      layout: post
+  - scope:
+      path: ""
+      type: series_posts
     values:
       layout: post

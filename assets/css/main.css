@@ -191,9 +191,51 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 
 /* ---- section scaffolding ------------------------------------------------ */
 section { padding: 3.5rem 0; }
+/* Adjacent sections were stacking 3.5rem + 3.5rem into a 7rem hole. */
+section + section { padding-top: 1rem; }
+.crumb { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-faint); margin: 0 0 1.2rem; }
+.crumb a { color: var(--ink-faint); }
+.crumb a:hover { color: var(--accent); }
+.crumb span { padding: 0 0.35rem; color: var(--line-strong); }
 .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; border-bottom: 1px solid var(--line); padding-bottom: 0.9rem; }
 .section-head h2 { font-size: clamp(1.4rem, 2.4vw, 1.9rem); }
 .section-head .more { font-family: var(--font-mono); font-size: 0.8rem; }
+
+/* ---- series cards (one card per SERIES, not per part) ------------------- */
+/* Sized so 1 series doesn't look lonely and 3+ tile cleanly. */
+.series-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); gap: 1rem; }
+.series-card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg);
+  padding: 1.5rem 1.6rem 1.3rem; display: flex; flex-direction: column; gap: 0.7rem;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.series-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.series-card-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.series-card .kicker {
+  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; color: var(--accent);
+}
+.series-card .state {
+  font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--trace-amber); border: 1px solid var(--line); border-radius: 999px; padding: 0.1rem 0.55rem;
+}
+.series-card .state.done { color: var(--trace-teal); }
+.series-card h3 { font-size: 1.35rem; }
+.series-card h3 a { color: var(--ink); }
+.series-card:hover h3 a { color: var(--accent); }
+.series-card .tagline { margin: 0; color: var(--ink-soft); font-size: 0.95rem; max-width: 46ch; }
+.series-card .progress { display: flex; align-items: center; gap: 0.7rem; margin-top: 0.2rem; }
+.series-card .progress-bar {
+  flex: 1; height: 5px; border-radius: 999px; background: var(--surface-2);
+  border: 1px solid var(--line); overflow: hidden;
+}
+.series-card .progress-fill { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
+.series-card .progress-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); white-space: nowrap; }
+.series-card .foot {
+  margin-top: auto; padding-top: 0.7rem; border-top: 1px solid var(--line);
+  font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-faint);
+}
+.series-card .foot a { color: var(--ink-soft); }
+.series-card .foot a:hover { color: var(--accent); }
 
 /* ---- series (earned 01–04 sequence) ------------------------------------ */
 .series { display: grid; gap: 0; border-top: 1px solid var(--line); }
@@ -213,7 +255,8 @@ section { padding: 3.5rem 0; }
 .series-item .flag { display: inline-block; font-family: var(--font-mono); font-size: 0.68rem; color: var(--trace-teal); border: 1px solid var(--line); border-radius: 5px; padding: 0.05rem 0.4rem; margin-top: 0.6rem; }
 
 /* ---- deep dives (standalone cards; no false sequence) ------------------- */
-.dives { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+.dives { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+@media (max-width: 900px) { .dives { grid-template-columns: repeat(2, 1fr); } }
 .dive {
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
   padding: 1.3rem 1.4rem; display: flex; flex-direction: column; gap: 0.55rem;
@@ -235,6 +278,9 @@ section { padding: 3.5rem 0; }
 .dive.skeleton:hover { transform: none; border-color: var(--line); }
 .series-item.skeleton:hover { background: transparent; }
 .series-item.skeleton:hover .num { color: var(--line-strong); }
+/* Planned parts show their title and thesis but read as not-yet-there. */
+.series-item.skeleton h3 { color: var(--ink-faint); font-weight: 500; }
+.series-item.skeleton .thesis { color: var(--ink-faint); }
 
 /* ---- writing list ------------------------------------------------------- */
 .post-list { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
@@ -244,6 +290,30 @@ section { padding: 3.5rem 0; }
 .post-list .date { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-faint); }
 .post-list .title { color: var(--ink); font-family: var(--font-display); font-weight: 500; font-size: 1.08rem; }
 .post-list a:hover .title { color: var(--accent); }
+.post-list .in-series {
+  display: block; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 400;
+  color: var(--ink-faint); letter-spacing: 0.04em; margin-top: 0.2rem;
+}
+
+/* ---- pagination --------------------------------------------------------- */
+.pager {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  margin-top: 1.6rem; font-family: var(--font-mono); font-size: 0.8rem;
+}
+.pager .step { color: var(--accent); }
+.pager .step.disabled { color: var(--line-strong); }
+.pager-pages { display: flex; gap: 0.35rem; }
+.pager-pages a, .pager-pages .here {
+  min-width: 1.9rem; padding: 0.25rem 0.45rem; text-align: center;
+  border: 1px solid var(--line); border-radius: 6px;
+}
+.pager-pages a { color: var(--ink-faint); }
+.pager-pages a:hover { color: var(--accent); border-color: var(--accent); }
+.pager-pages .here { color: var(--ink); background: var(--surface-2); border-color: var(--line-strong); }
+
+/* Section headings that link to their own index page. */
+.section-head h2 a { color: inherit; }
+.section-head h2 a:hover { color: var(--accent); }
 
 /* ---- prose (post pages) ------------------------------------------------- */
 .post { padding: 3.5rem 0 4rem; }
@@ -265,6 +335,57 @@ section { padding: 3.5rem 0; }
 .prose pre code { background: none; padding: 0; font-size: inherit; }
 .prose img { border-radius: var(--radius); border: 1px solid var(--line); margin: 1.6rem auto; }
 .prose hr { border: none; border-top: 1px solid var(--line); margin: 2.5rem 0; }
+
+/* Source line under a code block — sits tight to the <pre> it belongs to. */
+.prose .src { display: block; font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-faint); }
+.prose pre + p > .src:only-child, .prose pre + .src { margin-top: -0.9rem; }
+.prose .src a { color: var(--ink-faint); text-decoration-color: var(--line); }
+.prose .src a:hover { color: var(--accent); }
+
+/* ---- series badge ------------------------------------------------------- */
+.series-badge {
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--accent); margin: 0.7rem 0 0;
+}
+
+/* ---- figures & diagrams ------------------------------------------------- */
+/* Diagrams break the prose column on purpose: they carry structure the text
+   can only describe serially, so they get the full grid width. */
+.figure {
+  margin: 2.2rem auto; max-width: min(var(--maxw), 100%);
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius-lg); padding: 1.4rem 1.4rem 1.1rem;
+}
+.figure svg, .figure .mermaid svg { display: block; width: 100%; height: auto; }
+.figure figcaption {
+  font-family: var(--font-mono); font-size: 0.76rem; line-height: 1.6;
+  color: var(--ink-faint); margin-top: 1rem;
+  border-top: 1px solid var(--line); padding-top: 0.75rem;
+}
+.figure figcaption b { color: var(--ink-soft); font-weight: 500; }
+.figure-mermaid { padding: 1.6rem 1rem; overflow-x: auto; }
+.figure-mermaid pre.mermaid { background: none; border: none; padding: 0; margin: 0; text-align: center; }
+/* Pre-render state: hide the raw source so a slow CDN never flashes DSL text. */
+pre.mermaid:not([data-processed]) { visibility: hidden; min-height: 2rem; }
+.figure-scroll { overflow-x: auto; }
+.figure-scroll > svg { min-width: 640px; }
+
+/* SVG diagram type scale — set here so diagrams inherit the site's palette
+   and stay legible when the browser zooms text. */
+.dg-label  { font-family: var(--font-body); font-size: 13px; fill: var(--ink); }
+.dg-mono   { font-family: var(--font-mono); font-size: 11.5px; fill: var(--ink-soft); }
+.dg-small  { font-family: var(--font-mono); font-size: 10px; fill: var(--ink-faint); letter-spacing: 0.04em; }
+.dg-title  { font-family: var(--font-display); font-size: 13px; font-weight: 600; fill: var(--ink); }
+.dg-box    { fill: var(--surface-2); stroke: var(--line-strong); }
+.dg-line   { stroke: var(--ink-faint); fill: none; }
+.dg-track  { fill: var(--trace-track); opacity: 0.35; }
+.dg-prefill { fill: var(--trace-amber); }
+.dg-decode  { fill: var(--trace-teal); }
+.dg-idle    { fill: var(--trace-track); }
+.dg-accent  { fill: var(--trace-blue); }
+/* Cell text sits on amber/teal fills, which stay light in both schemes, so it
+   is deliberately NOT var(--ink) — that would invert to near-white on dark. */
+.dg-cell-txt { font-family: var(--font-mono); font-size: 10.5px; fill: #0B0E14; fill-opacity: 0.82; text-anchor: middle; }
 
 /* ---- footer ------------------------------------------------------------- */
 .site-footer { border-top: 1px solid var(--line); margin-top: 2rem; padding: 2.5rem 0; }

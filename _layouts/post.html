@@ -9,8 +9,16 @@ layout: default
       {%- if page.reading_time %} · {{ page.reading_time }}{% endif -%}
     </p>
     <h1>{{ page.title }}</h1>
+    {%- if page.series %}
+    <p class="series-badge">
+      {%- if page.series_url %}<a href="{{ page.series_url | relative_url }}">{{ page.series }}</a>
+      {%- else %}{{ page.series }}{% endif %}
+      {%- if page.part %} · part {{ page.part }}{% endif %}
+    </p>
+    {%- endif %}
   </div>
   <div class="prose">
     {{ content }}
   </div>
 </article>
+{%- if page.mermaid %}{% include mermaid.html %}{% endif -%}

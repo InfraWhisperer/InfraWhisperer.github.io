@@ -1,0 +1,37 @@
+---
+layout: series
+title: "Inside vLLM"
+permalink: /series/inside-vllm/
+order: 1
+description: "A component-by-component walk through vLLM's V1 engine, read from the code and pinned to a public commit. For engineers who run vLLM in production and still treat it as a black box."
+tagline: "vLLM's V1 engine, one component at a time — request in, token out, read from the source rather than the paper."
+intro: "Most people running vLLM in production can tune it and cannot read it. This series goes through the V1 engine one component at a time — request in, token out — from the source rather than the paper. Every claim is pinned to a public commit, so you can open the file next to the post and check it."
+roadmap:
+  - part: 1
+    title: "There is no prefill phase"
+    thesis: "The engine loop. One counter per request, one token budget per step, and why the two words every explanation is built on name nothing in the scheduler."
+  - part: 2
+    title: "The prefix cache is a dict"
+    thesis: "The block pool, the chained block hash, and the free-block queue that doubles as eviction order. It isn't the radix tree you're picturing, and a cache hit emits no event."
+  - part: 3
+    title: "Where the memory actually goes"
+    thesis: "How vLLM decides how many KV blocks exist: the profiling run, gpu_memory_utilization, and the block-size math that hybrid Mamba models force on everyone else."
+  - part: 4
+    title: "The scheduler, line by line"
+    thesis: "The full schedule() walk — running queue, waiting queue, encoder budget, preemption — and the SchedulerOutput contract that is the entire interface to the GPU."
+  - part: 5
+    title: "From SchedulerOutput to a CUDA graph"
+    thesis: "The model runner: persistent input batch, block tables, attention metadata, graph capture and dispatch, and why the batch gets padded."
+  - part: 6
+    title: "Why there are nine attention backends"
+    thesis: "The backend interface and the metadata-builder contract. What actually differs between FlashAttention, FlashInfer and Triton, and how one gets picked."
+  - part: 7
+    title: "Sampling and the way out"
+    thesis: "Logits processors, the structured-output bitmask, logprobs, detokenization, stop strings on the frontend, and the chunking that keeps one big step off the event loop."
+  - part: 8
+    title: "Scaling out"
+    thesis: "Tensor, pipeline, data and expert parallelism as executors. The coordinator process, the worker processes, and where KV connectors plug in for disaggregated prefill."
+---
+
+<!-- Body is optional. The `series` layout renders the roadmap from front matter;
+     anything written here appears below the parts list. -->

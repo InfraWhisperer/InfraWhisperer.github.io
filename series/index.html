@@ -1,0 +1,32 @@
+---
+layout: default
+title: Series
+permalink: /series/
+description: "Multi-part deep dives on LLM inference infrastructure by Raghav Potluri — each one a sustained walk through a system, read from the source."
+---
+
+{%- assign all_series = site.pages | where: "layout", "series" | sort: "order" -%}
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Series</h2>
+      <span class="more">{{ all_series | size }} series</span>
+    </div>
+
+    <p class="lede" style="max-width:62ch">
+      Some things don't fit in one post. These are the sustained walks — a whole system taken
+      apart in order, each part standing on its own but built to be read in sequence.
+    </p>
+
+    {% if all_series.size > 0 %}
+    <div class="series-cards">
+      {%- for s in all_series %}
+        {% include series-card.html series=s %}
+      {%- endfor %}
+    </div>
+    {% else %}
+    <p class="lede">Nothing here yet.</p>
+    {% endif %}
+  </div>
+</section>
