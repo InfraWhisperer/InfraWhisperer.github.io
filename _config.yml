@@ -4,7 +4,7 @@ description: >-
   Raghav Potluri — engineering notes on the infrastructure beneath large language
   models: distributed inference, prompt caching, and the telemetry that makes it
   debuggable.
-url: "https://infrawhisperer.github.io"
+url: "https://raghavpotluri.com"
 baseurl: ""
 lang: en
 
