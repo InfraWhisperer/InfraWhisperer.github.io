@@ -11,8 +11,8 @@ roadmap:
     title: "There is no prefill phase"
     thesis: "The engine loop. One counter per request, one token budget per step, and why the two words every explanation is built on name nothing in the scheduler."
   - part: 2
-    title: "The prefix cache is a dict"
-    thesis: "The block pool, the chained block hash, and the free-block queue that doubles as eviction order. It isn't the radix tree you're picturing, and a cache hit emits no event."
+    title: "Preemption is not amnesia"
+    thesis: "Freeing a block doesn't uncache it. The block pool, the free queue that doubles as the entire eviction policy, and why a preempted request usually gets its context back for nothing."
   - part: 3
     title: "Where the memory actually goes"
     thesis: "How vLLM decides how many KV blocks exist: the profiling run, gpu_memory_utilization, and the block-size math that hybrid Mamba models force on everyone else."

@@ -1,0 +1,85 @@
+<figure class="figure figure-scroll">
+<svg viewBox="0 0 880 408" role="img"
+     aria-label="Two panels. The top shows the free block queue as a doubly linked list: allocation pops from the head, freeing appends to the tail, and a cache hit removes a block from the middle. The bottom shows a request's four blocks being freed in reverse, so its tail block lands nearest the head of the queue and its prefix block lands furthest away.">
+
+  <!-- ── panel A: the queue ─────────────────────────────────────────── -->
+  <text x="0" y="16" class="dg-title">The free queue is the eviction policy</text>
+  <text x="0" y="34" class="dg-small">NO TIMESTAMPS, NO HEAP, NO LRU BOOKKEEPING — ONLY POSITION IN A LINKED LIST</text>
+
+  <g class="dg-small">
+    <text x="40" y="72">get_new_blocks()</text>
+    <text x="742" y="72">free_blocks()</text>
+  </g>
+
+  <!-- arrows in/out -->
+  <g class="dg-line" stroke-width="1.5">
+    <path d="M122 105 L48 105" marker-end="url(#ar)"/>
+    <path d="M852 105 L744 105" marker-end="url(#ar)"/>
+  </g>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-faint)"/>
+    </marker>
+  </defs>
+
+  <!-- links between boxes -->
+  <g class="dg-line" stroke-dasharray="2 2">
+    <path d="M204 105 L218 105"/><path d="M292 105 L306 105"/>
+    <path d="M380 105 L394 105"/><path d="M468 105 L482 105"/>
+    <path d="M556 105 L570 105"/><path d="M644 105 L658 105"/>
+  </g>
+
+  <!-- blocks: first two unhashed (reused first), rest cached -->
+  <g>
+    <rect x="130" y="88" width="74" height="34" rx="5" class="dg-idle"/><text x="167" y="109" class="dg-cell-txt">no hash</text>
+    <rect x="218" y="88" width="74" height="34" rx="5" class="dg-idle"/><text x="255" y="109" class="dg-cell-txt">no hash</text>
+    <rect x="306" y="88" width="74" height="34" rx="5" class="dg-decode"/><text x="343" y="109" class="dg-cell-txt">#7f3a</text>
+    <rect x="394" y="88" width="74" height="34" rx="5" class="dg-decode"/><text x="431" y="109" class="dg-cell-txt">#c108</text>
+    <rect x="482" y="88" width="74" height="34" rx="5" class="dg-decode"/><text x="519" y="109" class="dg-cell-txt">#2b91</text>
+    <rect x="570" y="88" width="74" height="34" rx="5" class="dg-decode"/><text x="607" y="109" class="dg-cell-txt">#e44d</text>
+    <rect x="658" y="88" width="74" height="34" rx="5" class="dg-decode"/><text x="695" y="109" class="dg-cell-txt">#a05c</text>
+  </g>
+
+  <g class="dg-small">
+    <text x="130" y="142">HEAD · REUSED NEXT</text>
+    <text x="732" y="142" text-anchor="end">TAIL · SAFEST</text>
+    <text x="130" y="160" fill="var(--ink-faint)">unhashed blocks are prepended — they can never produce a hit</text>
+  </g>
+
+  <!-- touch() pulling one out of the middle -->
+  <g class="dg-line" stroke-width="1.5"><path d="M431 122 L431 178" marker-end="url(#ar)"/></g>
+  <text x="443" y="184" class="dg-mono">touch() — a cache hit yanks a block out of the middle, O(1)</text>
+
+  <!-- ── panel B: the reversal ──────────────────────────────────────── -->
+  <line x1="0" y1="212" x2="880" y2="212" stroke="var(--line)"/>
+  <text x="0" y="240" class="dg-title">Why the shared prefix outlives the tail</text>
+  <text x="0" y="258" class="dg-small">free() HANDS THE BLOCKS OVER reversed(), SO THE LAST BLOCK DIES FIRST</text>
+
+  <text x="0" y="292" class="dg-mono">request</text>
+  <g>
+    <rect x="130" y="274" width="74" height="30" rx="5" class="dg-prefill"/><text x="167" y="293" class="dg-cell-txt">B0</text>
+    <rect x="218" y="274" width="74" height="30" rx="5" class="dg-prefill"/><text x="255" y="293" class="dg-cell-txt">B1</text>
+    <rect x="306" y="274" width="74" height="30" rx="5" class="dg-prefill"/><text x="343" y="293" class="dg-cell-txt">B2</text>
+    <rect x="394" y="274" width="74" height="30" rx="5" class="dg-prefill"/><text x="431" y="293" class="dg-cell-txt">B3</text>
+  </g>
+  <text x="480" y="293" class="dg-small">B0 IS THE SHARED PREFIX · B3 IS THIS REQUEST'S TAIL</text>
+
+  <g class="dg-line" stroke-width="1.5"><path d="M299 310 L299 334" marker-end="url(#ar)"/></g>
+  <text x="311" y="330" class="dg-mono">reversed()</text>
+
+  <text x="0" y="366" class="dg-mono">queue</text>
+  <g>
+    <rect x="130" y="348" width="74" height="30" rx="5" class="dg-prefill"/><text x="167" y="367" class="dg-cell-txt">B3</text>
+    <rect x="218" y="348" width="74" height="30" rx="5" class="dg-prefill"/><text x="255" y="367" class="dg-cell-txt">B2</text>
+    <rect x="306" y="348" width="74" height="30" rx="5" class="dg-prefill"/><text x="343" y="367" class="dg-cell-txt">B1</text>
+    <rect x="394" y="348" width="74" height="30" rx="5" class="dg-prefill"/><text x="431" y="367" class="dg-cell-txt">B0</text>
+  </g>
+  <g class="dg-small">
+    <text x="130" y="396">EVICTED FIRST</text>
+    <text x="468" y="367">EVICTED LAST — THE PREFIX EVERY OTHER REQUEST SHARES</text>
+  </g>
+</svg>
+<figcaption>
+Blocks are allocated with <code>popleft</code> and freed with <code>append</code>, so <b>position in the queue is the entire eviction policy</b> — approximate LRU falls out of insertion order rather than being tracked. The list is intrusive (<code>prev_free_block</code> / <code>next_free_block</code> live on the block itself) precisely so <code>touch()</code> can pull a matched block out of the middle in constant time. A freed block stays in the hash map and stays matchable; it only loses its identity when someone actually needs the memory.
+</figcaption>
+</figure>

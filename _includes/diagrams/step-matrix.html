@@ -127,6 +127,6 @@
   <text x="116" y="380" class="dg-small">STEPS N+4 AND N+7 ARE DRAWN AT A 2PX FLOOR — AT TRUE SCALE THEY WOULD BE SUB-PIXEL.</text>
 </svg>
 <figcaption>
-Eight consecutive engine steps on a single GPU. <b>A column is one <code>execute_model</code> call</b>, and every column here mixes prefill chunks with single decode tokens — the scheduler has no notion of a prefill phase to separate them. Request D is preempted at N+4 to free blocks for C and E, and pays for it at N+6 by recomputing all 8189 of its tokens from scratch. The two decode-only steps schedule 3 and 4 tokens against an 8192 budget — under 0.05% of it — while still reading every weight in the model once.
+Eight consecutive engine steps on a single GPU. <b>A column is one <code>execute_model</code> call</b>, and every column here mixes prefill chunks with single decode tokens — the scheduler has no notion of a prefill phase to separate them. Request D is preempted at N+4 to free blocks for C and E, and is shown paying the worst case at N+6 — recomputing all 8189 of its tokens, which is what happens only if its freed blocks were evicted while it waited. The two decode-only steps schedule 3 and 4 tokens against an 8192 budget — under 0.05% of it — while still reading every weight in the model once.
 </figcaption>
 </figure>
